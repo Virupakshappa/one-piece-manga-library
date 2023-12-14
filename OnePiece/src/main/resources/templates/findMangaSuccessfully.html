@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Manga Selection</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <style>
+       
+        .table-custom {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+            box-shadow: 0 2px 2px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            var checkedOne = Array.prototype.slice.call(checkboxes).some(x => x.checked);
+            var errorMessageDiv = document.getElementById('errorMessage');
+
+            if (!checkedOne) {
+                errorMessageDiv.textContent = "Select at least 1 manga to borrow";
+                return false;
+            } else {
+                errorMessageDiv.textContent = '';
+            }
+            return true;
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Found Following Manga/Mangas with Search Criteria</h1>
+        <div id="errorMessage" class="text-danger mb-3"></div>
+           
+        <form id="mangaForm" th:action="@{/manga/borrowManga}" method="post" onsubmit="return validateForm()">
+            <table class="table table-custom table-hover">
+                <thead>
+                    <tr>
+                        <th>Select</th>
+                        <th>mangaID</th>
+                        <th>animeName</th>
+                        <th>writtenBy</th>
+                        <th>category</th>
+                        <th>Cover</th>
+                        <th>Reviews</th>
+                        <th>Average Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="manga : ${searchedManga}">
+                        <td><input type="checkbox" th:name="'mangaID'" th:value="${manga.mangaID}"></td>
+                        <td th:text="${manga.mangaID}"></td>
+                        <td th:text="${manga.animeName}"></td>
+                        <td th:text="${manga.writtenBy}"></td>
+                        <td th:text="${manga.category}"></td>
+                        <td>
+                            <img th:src="@{'/images/' + ${manga.coverFileName}}" alt="Manga Cover"
+                                style="width:100px;height:100px;" />
+                        </td>
+                        <td>
+                            <a th:href="@{/manga/reviewManga(mangaID=${manga.mangaID})}">Review</a>
+                        </td>
+                        <td th:text="${mangaRatings[manga.mangaID]}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-custom">Borrow Selected Manga</button>
+        </form>
+        <a href="/manga/browseManga" class="btn btn-link mt-3">Back</a><br>
+        <a href="/student/dashboard" class="btn btn-link mt-3">Student Dashboard</a><br>
+        <a href="/student/logout" class="btn btn-secondary mt-3">Logout of Student Account</a>
+    </div>
+</body>
+
+</html>

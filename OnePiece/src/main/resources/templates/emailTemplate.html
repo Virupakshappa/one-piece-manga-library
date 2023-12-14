@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Welcome to One Piece Manga Library</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f4f4f4;
+			color: #333;
+			line-height: 1.6;
+		}
+
+		.container {
+			width: 80%;
+			margin: 20px auto;
+			background: #fff;
+			padding: 20px;
+			border-radius: 5px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		}
+
+		.header {
+			color: #007bff;
+			margin-bottom: 20px;
+		}
+
+		.button {
+			display: inline-block;
+			padding: 10px 20px;
+			margin: 10px 0;
+			background-color: #007bff;
+			color: white;
+			text-decoration: none;
+			border-radius: 5px;
+		}
+
+		.button:hover {
+			background-color: #0056b3;
+		}
+
+		.name {
+			font-weight: bold;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h2 class="header">Welcome to One Piece Manga Library, <span class="name" th:text="${name}">[Name]</span>!</h2>
+		<p>We're excited to have you on board. Our library offers a vast collection of manga for you to borrow and
+			enjoy. Whether you're a long-time manga fan or just getting started, there's something here for everyone.
+		</p>
+		<p>A little about me - I'm <span class="name">Veeru Janadri</span>, the creator of One Piece Manga Library.</p>
+		<a href="https://www.linkedin.com/in/vjanadri/" class="button">LinkedIn Profile</a>
+		<a href="https://virupakshappa.github.io/" class="button">Portfolio</a>
+		<a href="https://github.com/Virupakshappa" class="button">GitHub</a><br />
+		<p>Best Regards,<br>Veeru Janadri</p>
+	</div>
+</body>
+
+</html>

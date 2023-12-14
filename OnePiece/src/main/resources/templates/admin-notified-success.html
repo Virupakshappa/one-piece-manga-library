@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Notification Success</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <style>
+        .container-custom {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-top: 50px;
+        }
+        .btn-link-custom {
+            color: #007bff;
+            transition: all 0.3s ease;
+        }
+        .btn-link-custom:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container container-custom">
+        <h2 class="text-center">Student notified!!</h2>
+        <h5 class="text-center" style="color: limegreen;">
+            <strong th:text="${manga.borrowedBy.firstName}">Student Name</strong> has been notified to return below mentioned manga!!
+        </h5>
+        <div class="mt-4">
+            <p><strong>Manga ID:</strong> <span th:text="${manga.mangaID}"></span></p>
+            <p><strong>Manga Name:</strong> <span th:text="${manga.animeName}"></span></p>
+            <p><strong>Borrowed By:</strong> <span th:text="${manga.borrowedBy.firstName}"></span></p>
+            <p><strong>Written By:</strong> <span th:text="${manga.writtenBy}"></span></p>
+        </div>
+        <a href="/manga/adminbrowse" class="btn btn-link btn-link-custom mt-3">Back to Browse</a>
+    </div>
+</body>
+
+</html>

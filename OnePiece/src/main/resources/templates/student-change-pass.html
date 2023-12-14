@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Update Password</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    	<link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Student Update Password</h1>
+        <form th:action="@{/password/update/student}" method="post" class="mt-4">
+            <div class="form-group">
+                <label><strong>Enter New Password:</strong></label>
+                <input type="password" name="newPassword" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label><strong>Confirm New Password:</strong></label>
+                <input type="password" name="confirmPassword" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Change Password</button>
+        </form>
+        <div th:if="${passMissmatch}" class="text-danger mt-3">
+            <p th:text="${passMissmatch}"></p>
+        </div>
+        <a href="/student/studentProfile" class="btn btn-link mt-3">Back</a>
+    </div>
+</body>
+</html>

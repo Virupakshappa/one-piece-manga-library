@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Login</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    	<link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Student Login</h1>
+        <form id="loginForm" class="mt-4">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" class="form-control">
+            </div>
+            <div id="loginError" class="text-danger"></div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        <a href="/" class="btn btn-link mt-3">Back</a>
+ <script>
+        $(document).ready(function() {
+            $('#loginForm').on('submit', function(e) {
+                e.preventDefault();
+                var email = $('#email').val();
+                var password = $('#password').val();
+
+                // Validate input
+                if(email.trim() === '' || password.trim() === '') {
+                    $('#loginError').text('Email and Password cannot be blank.');
+                    return;
+                }
+
+                $.ajax({
+                    url: '/student/login',
+                    type: 'POST',
+                    data: { 
+                        email: email, 
+                        password: password 
+                    },
+                    success: function(response) {
+                        if(response === 'success'){
+                            window.location.href = '/student/successpage'; // Redirect to student dashboard
+                        } else {
+                            $('#loginError').text('Invalid student credentials.');
+                        }
+                    }
+                });
+            });
+        });
+    </script>    </div>
+</body>
+</html>

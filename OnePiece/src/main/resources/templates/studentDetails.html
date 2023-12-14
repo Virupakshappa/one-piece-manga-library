@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Student Details</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    	<link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Student Details</h1>
+        <div class="card">
+            <div class="card-body">
+                <p class="card-text"><strong>First Name:</strong> <span th:text="${student.firstName}"></span></p>
+                <p class="card-text"><strong>Last Name:</strong> <span th:text="${student.lastName}"></span></p>
+                <p class="card-text"><strong>Email:</strong> <span th:text="${student.email}"></span></p>
+                <p class="card-text"><strong>Age:</strong> <span th:text="${student.age}"></span></p>
+                <p class="card-text"><strong>College Name:</strong> <span th:text="${student.collegeName}"></span></p>
+            </div>
+        </div>
+        <a href="/manga/adminbrowse" class="btn btn-primary mt-3">Back to Mangas</a>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error Deleting Manga</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    	<link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+</head>
+<body>
+    <div class="container mt-5 text-center">
+        <h1>Error Deleting Manga</h1>
+        <p>You have Deleted <span th:text="${result}">0</span> mangas.</p>
+        <a href="/manga/adminbrowse" class="btn btn-primary">Back to Browse Mangas</a>
+        <a href="/admin/logout" class="btn btn-secondary">Logout of Admin Account</a>
+    </div>
+</body>
+</html>

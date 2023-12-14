@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Student Dashboard</title>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+		<link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+</head>
+
+<body>
+	<div class="container mt-5">
+		<h1 class="text-center">Student Dashboard - The Manga Library</h1>
+		<div class="mt-4">
+			<a href="/manga/browseManga" class="btn btn-primary">Browse New Mangas</a><br><br>
+			<a href="/student/borrowedMangas" class="btn btn-primary">Borrowed Mangas</a><br><br>
+			<a href="/student/studentProfile" class="btn btn-primary">View My Profile</a><br><br>
+			<a href="/student/logout" class="btn btn-secondary">Logout of Student Account</a>
+		</div>
+		<div class="mt-4">
+			<h2>Notifications</h2>
+			<ul>
+				<li th:each="notification : ${notifications}">
+					<a th:href="@{/student/readNotification/{id}(id=${notification.id})}"
+						th:text="${notification.message}" class="btn btn-link"> </a><br />
+				</li>
+			</ul>
+		</div>
+		<a href="/" class="btn btn-link mt-3">Back to home page</a>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Welcome to One Piece - The Manga Library</title>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<!-- Custom CSS -->
+	<link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+
+<body>
+	<div class="container mt-5">
+		<h1 class="text-center">Welcome to One Piece - The Manga Library</h1>
+		<div class="role-selection mt-4">
+			<h2 class="text-center">Are you a Student or an Admin?</h2>
+			<div class="d-flex justify-content-center mt-3">
+				<a class="btn btn-primary mr-2" href="/student/login">Student Login</a>
+				<a class="btn btn-secondary" href="/student/signup">Student Sign Up</a>
+			</div>
+			<div class="d-flex justify-content-center mt-3">
+				<a class="btn btn-primary mr-2" href="/admin/login">Admin Login</a>
+				<a class="btn btn-secondary" href="/admin/signup">Admin Signup</a>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+
+</html>

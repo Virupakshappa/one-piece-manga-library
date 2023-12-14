@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Manga Details</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    	<link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Edit Manga Details</h1>
+
+        <form th:action="@{/manga/edit}" th:object="${manga}" method="post" enctype="multipart/form-data" class="mt-4">
+            <div class="form-group">
+                <label>Manga ID:</label>
+                <input type="text" th:field="*{mangaID}" class="form-control" disabled="disabled" />
+                <input type="hidden" th:field="*{mangaID}" />
+            </div>
+
+            <div class="form-group">
+                <label>Anime Name:</label>
+                <input type="text" th:field="*{animeName}" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Written By:</label>
+                <input type="text" th:field="*{writtenBy}" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Category:</label>
+                <input type="text" th:field="*{category}" class="form-control" />
+            </div>
+
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input type="checkbox" th:field="*{available}" class="form-check-input" />
+                    Available
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label>Upload New Cover (optional):</label>
+                <input type="file" name="mangaCover" class="form-control-file" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update Manga</button>
+        </form>
+
+        <a href="/manga/adminbrowse" class="btn btn-link mt-3">Back to List</a>
+    </div>
+</body>
+</html>

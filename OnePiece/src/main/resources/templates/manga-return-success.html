@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Return Successful</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <style>
+       
+        .table-custom {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+            box-shadow: 0 2px 2px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5 text-center">
+        <h1>Return Successful</h1>
+        <h4 style="color: #007bff;">You have returned <span th:text="${result}">0</span> manga/s.</h4>
+        <h2>Here are the mangas you returned:</h2>
+        <table class="table table-custom table-hover mt-3">
+            <thead>
+                <tr>
+                    <th>Manga ID</th>
+                    <th>Anime Name</th>
+                    <th>Written By</th>
+                    <th>Category</th>
+                    <th>Cover Image</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="manga : ${returnedMangas}">
+                    <td th:text="${manga.mangaID}"></td>
+                    <td th:text="${manga.animeName}"></td>
+                    <td th:text="${manga.writtenBy}"></td>
+                    <td th:text="${manga.category}"></td>
+                    <td>
+                        <img th:src="@{'/images/' + ${manga.coverFileName}}" alt="Cover Image"
+                            style="width:100px;height:100px;" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="/manga/browseManga" class="btn btn-custom mt-3">Back to Browse Mangas</a><br>
+        <a href="/student/dashboard" class="btn btn-link mt-3">Student Dashboard</a><br>
+        <a href="/student/logout" class="btn btn-secondary mt-3">Logout of Student Account</a>
+    </div>
+</body>
+
+</html>

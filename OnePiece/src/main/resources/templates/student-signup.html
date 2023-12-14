@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Student Sign Up</title>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<!-- Custom CSS -->
+	<link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+
+<body>
+	<div class="container mt-5">
+		<h1 class="text-center">Student Sign Up</h1>
+		<form th:action="@{/student/signup}" th:object="${student}" method="post" class="mt-4">
+
+			<!-- First Name Field -->
+			<div class="form-group">
+				<label for="firstName">First Name:</label>
+				<input type="text" th:field="*{firstName}" class="form-control" />
+				<span class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+			</div>
+
+			<!-- Last Name Field -->
+			<div class="form-group">
+				<label for="lastName">Last Name:</label>
+				<input type="text" th:field="*{lastName}" class="form-control" />
+				<span class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+			</div>
+
+			<!-- Email Field -->
+			<div class="form-group">
+				<label for="email">Email:</label>
+				<input type="email" th:field="*{email}" class="form-control" />
+				<span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+			</div>
+
+			<!-- Age Field -->
+			<div class="form-group">
+				<label for="age">Age:</label>
+				<input type="number" th:field="*{age}" class="form-control" />
+				<span class="text-danger" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></span>
+			</div>
+
+			<!-- College Name Field -->
+			<div class="form-group">
+				<label for="collegeName">College Name:</label>
+				<select th:field="*{collegeName}" class="form-control">
+					<option value="">--Select College--</option>
+					<option value="NEU">NEU</option>
+					<option value="BU">BU</option>
+				</select>
+				<span class="text-danger" th:if="${#fields.hasErrors('collegeName')}" th:errors="*{collegeName}"></span>
+			</div>
+
+			<!-- Password Field -->
+			<div class="form-group">
+				<label for="password">Password:</label>
+				<input type="password" th:field="*{password}" class="form-control" />
+				<span class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+			</div>
+
+			<!-- Submit Button -->
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary">Sign Up</button>
+			</div>
+		</form>
+		<a href="/" class="btn btn-link">Back</a>
+	</div>
+
+
+</body>
+
+</html>

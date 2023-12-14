@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Manga</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    	<link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Add Manga</h1>
+        <form th:action="@{/manga/addManga}" method="post" th:object="${manga}" enctype="multipart/form-data" class="mt-4">
+            <div class="form-group">
+                <label for="mangaID">Manga ID:</label>
+                <input type="number" th:field="*{mangaID}" class="form-control" />
+                <span class="text-danger" th:if="${#fields.hasErrors('mangaID')}" th:errors="*{mangaID}"></span>
+            </div>
+            <div class="form-group">
+                <label for="animeName">Anime Name:</label>
+                <input type="text" th:field="*{animeName}" class="form-control" />
+                <span class="text-danger" th:if="${#fields.hasErrors('animeName')}" th:errors="*{animeName}"></span>
+            </div>
+            <div class="form-group">
+                <label for="writtenBy">Written By:</label>
+                <input type="text" th:field="*{writtenBy}" class="form-control" />
+                <span class="text-danger" th:if="${#fields.hasErrors('writtenBy')}" th:errors="*{writtenBy}"></span>
+            </div>
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <input type="text" th:field="*{category}" class="form-control" />
+                <span class="text-danger" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></span>
+            </div>
+            <div class="form-group">
+                <label>Available:</label>
+                <div class="form-check form-check-inline">
+                    <input type="radio" th:field="*{available}" value="true" class="form-check-input" id="available_true" />
+                    <label class="form-check-label" for="available_true">Yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="radio" th:field="*{available}" value="false" class="form-check-input" id="available_false" />
+                    <label class="form-check-label" for="available_false">No</label>
+                </div>
+                <span class="text-danger" th:if="${#fields.hasErrors('available')}" th:errors="*{available}"></span>
+            </div>
+            <div class="form-group">
+                <label for="mangaCover">Manga Cover:</label>
+                <input type="file" th:field="*{mangaCover}" class="form-control-file" />
+                <span class="text-danger" th:if="${#fields.hasErrors('mangaCover')}" th:errors="*{mangaCover}"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+        <a href="/admin/dashboard" class="btn btn-link mt-3">Back</a>
+    </div>
+</body>
+</html>

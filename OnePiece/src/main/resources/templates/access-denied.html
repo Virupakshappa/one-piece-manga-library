@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Access Denied</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+</head>
+<body>
+    <div class="container mt-5 text-center">
+        <h1>Access Denied</h1>
+
+        <div th:if="${role == 'admin'}" class="mt-3">
+            <p>You must be logged in as an administrator to access this page.</p>
+            <a href="/admin/login" class="btn btn-primary">Login as Admin</a>
+        </div>
+
+        <div th:if="${role == 'student'}" class="mt-3">
+            <p>You must be logged in as a student to access this page.</p>
+            <a href="/student/login" class="btn btn-primary">Login as Student</a>
+        </div>
+
+        <div th:if="${role == null}" class="mt-3">
+            <p>You must be logged in to access this page.</p>
+            <a href="/admin/login" class="btn btn-primary mr-2">Admin Login</a>
+            <a href="/student/login" class="btn btn-secondary">Student Login</a>
+        </div>
+
+        <a href="/" class="btn btn-link mt-3">Return to Home</a>
+    </div>
+</body>
+</html>

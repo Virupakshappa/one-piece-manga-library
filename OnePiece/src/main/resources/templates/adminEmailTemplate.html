@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Admin SignUp Email</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f4f4f4;
+			color: #333;
+			line-height: 1.6;
+		}
+
+		.container {
+			width: 80%;
+			margin: 20px auto;
+			background: #fff;
+			padding: 20px;
+			border-radius: 5px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		}
+
+		.button {
+			display: inline-block;
+			padding: 10px 20px;
+			margin: 10px 0;
+			background-color: #007bff;
+			color: white;
+			text-decoration: none;
+			border-radius: 5px;
+			border: 1px solid transparent;
+			transition: background-color 0.3s ease;
+		}
+
+		.button:hover {
+			background-color: #0056b3;
+			border-color: #004085;
+		}
+
+		ul {
+			padding-left: 20px;
+		}
+
+		li {
+			margin-bottom: 10px;
+		}
+
+		h2 {
+			color: #007bff;
+		}
+		.name {
+			font-weight: bold;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h2>Welcome to One Piece Manga Library, Admin!</h2>
+		<p>Your Admin ID is: <strong th:text="${adminID}">[Admin ID]</strong></p>
+		<p>As an administrator, you play a crucial role in our library. Here's what you can do:</p>
+		<ul>
+			<li>Edit Student Details: Update and manage student profiles.</li>
+			<li>Manage Manga Details: Add, update, or remove manga from our collection.</li>
+			<li>View Student and Manga Details: Gain insights into preferences and popularity.</li>
+			<li>Delete Mangas: Remove outdated or less popular manga.</li>
+			<li>Monitor Manga Borrowing: Track borrowed mangas and manage borrowing history.</li>
+		</ul>
+		<p>We're thrilled to have you with us and look forward to your contributions!</p>
+		<p>A little about me - I'm <span class="name">Veeru Janadri</span>, the creator of One Piece Manga Library.</p>
+		<a href="https://www.linkedin.com/in/vjanadri/" class="button">LinkedIn Profile</a>
+		<a href="https://virupakshappa.github.io/" class="button">Portfolio</a>
+		<a href="https://github.com/Virupakshappa" class="button">GitHub</a>
+		<p>Best Regards,<br>Veeru Janadri</p>
+
+	</div>
+</body>
+
+</html>

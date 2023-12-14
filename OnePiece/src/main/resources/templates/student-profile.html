@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Student Profile</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <style>
+       
+        .btn-custom {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+            box-shadow: 0 2px 2px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+        .form-control[readonly] {
+            background-color: #e9ecef;
+            opacity: 1;
+        }
+        .error-message {
+            color: red;
+        }
+        .success-message {
+            color: green;
+        }
+    </style>
+    <script>
+        function toggleEdit() {
+            var textInputs = document.querySelectorAll('input[type="text"], input[type="number"]:not(.no-edit)');
+            var submitButton = document.getElementById("submitButton");
+            textInputs.forEach(function (input) {
+                input.readOnly = !input.readOnly;
+            });
+            submitButton.style.display = submitButton.style.display === "none" ? "inline" : "none";
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Student Details:</h2>
+        <form th:action="@{/student/studentProfile/edit}" th:object="${studentDetails}" method="post" class="mt-4">
+            <div class="form-group">
+                <label><strong>First Name:</strong></label>
+                <input type="text" th:field="*{firstName}" readonly class="form-control">
+                <span class="error-message" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+            </div>
+            <div class="form-group">
+                <label><strong>Last Name:</strong></label>
+                <input type="text" th:field="*{lastName}" readonly class="form-control">
+            </div>
+            <div class="form-group">
+                <label><strong>Email ID:</strong></label>
+                <input type="email" th:field="*{email}" readonly class="form-control no-edit">
+            </div>
+            <div class="form-group">
+                <label><strong>Age:</strong></label>
+                <input type="number" th:field="*{age}" readonly class="form-control">
+            </div>
+            <div class="form-group">
+                <label><strong>College Name:</strong></label>
+                <input type="text" th:field="*{collegeName}" readonly class="form-control no-edit">
+            </div>
+
+            <button type="button" class="btn btn-custom" onclick="toggleEdit()">Edit</button>
+            <input type="submit" value="Submit" class="btn btn-custom" style="display: none;" id="submitButton">
+        </form>
+        <div th:if="${errorUpdate}" class="success-message">
+            <p th:text="${errorUpdate}"></p>
+        </div>
+        <div th:if="${successUpdate}" class="success-message">
+            <p th:text="${successUpdate}"></p>
+        </div>
+
+        <form th:action="@{/student/verifyPassword}" method="post" class="mt-4">
+            <p>You want to change password?</p>
+            <div class="form-group">
+                <label><strong>Enter Current Password:</strong></label>
+                <input type="password" name="currentPassword" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-warning">Change Password</button>
+        </form>
+        <div th:if="${passSuccess}" class="success-message">
+            <p th:text="${passSuccess}"></p>
+        </div>
+        <div th:if="${passMissmatch}" class="error-message">
+            <p th:text="${passMissmatch}"></p>
+        </div>
+
+        <a href="/student/dashboard" class="btn btn-link mt-3">Back to Student Dashboard</a> <br />
+    </div>
+</body>
+
+</html>

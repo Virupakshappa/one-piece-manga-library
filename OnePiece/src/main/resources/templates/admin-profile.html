@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Profile</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    	<link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Admin Details:</h2>
+
+        <form th:action="@{/admin/adminProfile/edit}" th:object="${adminDetails}" method="post" class="mt-4">
+            <div class="form-group">
+                <label><strong>Admin ID:</strong></label>
+                <input type="number" th:field="*{adminID}" readonly class="form-control no-edit">
+            </div>
+            <div class="form-group">
+                <label><strong>Admin Email ID:</strong></label>
+                <input type="email" th:field="*{adminEmailID}" readonly class="form-control">
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="toggleEdit()">Edit</button>
+            <input type="submit" value="Submit" class="btn btn-success" style="display: none;" id="submitButton">
+        </form>
+
+        <form th:action="@{/admin/verifyPassword}" method="post" class="mt-4">
+            <div class="form-group">
+                <label><strong>Enter Current Password:</strong></label>
+                <input type="password" name="currentPassword" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-warning">Change Password</button>
+        </form>
+        <div th:if="${passSuccess}" class="text-success">
+            <p th:text="${passSuccess}"></p>
+        </div>
+        <div th:if="${passMissmatch}" class="text-danger">
+            <p th:text="${passMissmatch}"></p>
+        </div>
+
+        <a href="/admin/dashboard" class="btn btn-link">Back to Admin Dashboard</a>
+    </div>
+
+    <script>
+        function toggleEdit() {
+            var inputs = document.querySelectorAll('input[type="text"], input[type="email"]:not(.no-edit)');
+            var submitButton = document.getElementById("submitButton");
+            inputs.forEach(function (input) {
+                input.readOnly = !input.readOnly;
+            });
+            submitButton.style.display = submitButton.style.display === "none" ? "inline" : "none";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<title>Manga Selection</title>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" th:href="@{/css/styles.css}" />
+	<style>
+		.table-custom {
+			background-color: white;
+			border-radius: 10px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		}
+
+		.table th,
+		.table td {
+			vertical-align: middle;
+		}
+
+		.btn-custom {
+			background-color: #007bff;
+			border-color: #007bff;
+			color: white;
+			box-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
+			transition: all 0.3s ease;
+		}
+
+		.btn-custom:hover {
+			background-color: #0056b3;
+			border-color: #004085;
+		}
+
+		.overdue {
+			color: red;
+			font-weight: bold;
+		}
+	</style>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		function validateForm() {
+			var checkboxes = document.querySelectorAll('input[type="checkbox"]:not(:disabled)');
+			var checkedOne = Array.from(checkboxes).some(checkbox => checkbox.checked);
+			var errorMessageDiv = document.getElementById('errorMessage');
+
+			if (!checkedOne) {
+				errorMessageDiv.textContent = "Select at least 1 manga to delete";
+				return false;
+			} else {
+				errorMessageDiv.textContent = '';
+			}
+			return true;
+		}
+	</script>
+
+</head>
+
+<body>
+	
+	<div class="container mt-5">
+		<h1 class="text-center mb-4">Mangas with Details for Admin</h1>
+		<div id="errorMessage" class="text-danger mb-3"></div>
+
+		<form th:action="@{/manga/deleteManga}" method="post" onsubmit="return validateForm()">
+			
+			<table class="table table-custom table-hover">
+				<thead>
+					<tr>
+						<th>Select</th>
+						<th>Manga ID</th>
+						<th>Anime Name</th>
+						<th>Written By</th>
+						<th>Category</th>
+						<th>Available</th>
+						<th>Cover</th>
+						<th>Borrowed By</th>
+						<th>Edit</th>
+						<th>Reviews</th>
+						<th>Average Ratings</th>
+						<th>Overdue</th>
+					</tr>
+				</thead>
+			
+
+				<tbody>
+					<tr th:each="manga : ${searchedManga}">
+						<td>
+							<input type="checkbox" th:name="'mangaID'" th:value="${manga.mangaID}"
+								th:disabled="${manga.borrowedBy != null}">
+						</td>
+						<td th:text="${manga.mangaID}"></td>
+						<td th:text="${manga.animeName}"></td>
+						<td th:text="${manga.writtenBy}"></td>
+						<td th:text="${manga.category}"></td>
+						<td th:text="${manga.available ? 'Yes' : 'No'}"></td>
+						<td>
+							<img th:src="@{'/images/' + ${manga.coverFileName}}" alt="Manga Cover"
+								style="width:100px;height:100px;" />
+						</td>
+						<td th:if="${manga.borrowedBy != null}">
+							<a th:href="@{/student/details/{email}(email=${manga.borrowedBy.email})}"
+								th:text="${manga.borrowedBy.firstName + ' ' + manga.borrowedBy.lastName}">View
+								Details</a>
+						</td>
+						<td th:unless="${manga.borrowedBy != null}">Not Borrowed</td>
+						<td>
+							<a th:href="@{/manga/edit/{id}(id=${manga.mangaID})}"
+								th:unless="${manga.borrowedBy != null}">Edit</a>
+							<span th:if="${manga.borrowedBy != null}">Not Editable</span>
+						</td>
+						<td>
+							<a th:href="@{/manga/reviewManga(mangaID=${manga.mangaID})}">View Reviews</a>
+						</td>
+						<td th:text="${mangaRatings[manga.mangaID]}"></td>
+						<td th:if="${manga.isOverdue}" class="overdue">
+							Overdue!!
+							<a th:href="@{/admin/notifyOverdue/{mangaId}(mangaId=${manga.mangaID})}"
+								onclick="return confirm('Notify student?')">Notify</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<button type="submit" class="btn btn-custom mt-3">Delete Selected Manga</button>
+		</form>
+		
+		<a th:href="@{/downloadMangaDetails/xls}" class="btn btn-custom mt-3">Download Manga Details (xls)</a>
+		<a href="/admin/dashboard" class="btn btn-link mt-3">Back</a>
+		<a href="/admin/logout" class="btn btn-secondary mt-3">Logout of Admin account</a>
+	</div>
+</body>
+
+</html>

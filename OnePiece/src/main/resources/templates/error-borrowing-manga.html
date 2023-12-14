@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error borrowing Manga</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    	<link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+</head>
+<body>
+    <div class="container mt-5 text-center">
+        <h1>Error Borrowing Manga</h1>
+        <p>You have borrowed <span th:text="${result}">0</span> mangas.</p>
+        <a href="/manga/browseManga" class="btn btn-primary">Back to Browse Mangas</a>
+        <a href="/student/dashboard" class="btn btn-primary">Back to Dashboard</a>
+        <a href="/student/logout" class="btn btn-secondary">Logout of Student Account</a>
+    </div>
+</body>
+</html>

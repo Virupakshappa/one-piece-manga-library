@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Admin Account Exist</title>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<!-- Custom CSS -->
+	<link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+
+<body>
+	<div class="container mt-5">
+		<h1 class="text-center">Welcome to One Piece - The Manga Library</h1>
+		<div class="role-selection mt-4">
+			<h2>Admin already exists with Admin ID: <span th:text="${adminID}">0</span></h2>
+
+
+			<div class="mt-3">
+				<a href="/admin/login" class="btn btn-primary">You can continue login</a> |
+
+			</div>
+			<div>
+				<a href="/admin/signup" class="btn btn-primary">Back to signup</a>
+
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

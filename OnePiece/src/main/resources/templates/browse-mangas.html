@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Browse Mangas</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+    <style>
+        body {
+            background-color: antiquewhite;
+        }
+
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-check-label {
+            margin-left: 10px;
+        }
+
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+        .form-check {
+            margin-bottom: 10px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function validateForm() {
+            var radioButtons = document.querySelectorAll('input[type="radio"]');
+            var selectedOne = Array.prototype.slice.call(radioButtons).some(x => x.checked);
+            var errorMessageDiv = document.getElementById('errorMessage');
+
+            if (!selectedOne) {
+                errorMessageDiv.textContent = "Select at least 1 criteria to view the mangas";
+                return false;
+            } else {
+                errorMessageDiv.textContent = '';
+            }
+            return true;
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 form-container">
+                <h1 class="text-center">Browse Manga</h1><br>
+                <form th:action="@{/manga/browseManga}" method="post" onsubmit="return validateForm()">
+                    <div id="errorMessage" class="error-message"></div>
+                    <div class="form-group">
+                        <label>Keyword</label>
+                        <input type="text" name="searchtext" class="form-control">
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" name="searchoption" value="availableMangas" class="form-check-input" id="availableMangas">
+                        <label class="form-check-label" for="availableMangas">Show all available Mangas</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" name="searchoption" value="mangaID" class="form-check-input" id="mangaID">
+                        <label class="form-check-label" for="mangaID">Search By mangaID</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" name="searchoption" value="animeName" class="form-check-input" id="animeName">
+                        <label class="form-check-label" for="animeName">Search By animeName</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" name="searchoption" value="writtenBy" class="form-check-input" id="writtenBy">
+                        <label class="form-check-label" for="writtenBy">Search By writtenBy</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" name="searchoption" value="category" class="form-check-input" id="category">
+                        <label class="form-check-label" for="category">Search By category</label>
+                    </div>
+                    <input type='hidden' name='option' value='browse'>
+                    <button type="submit" class="btn btn-primary mt-3">Search Mangas</button>
+                </form>
+                <div class="mt-4">
+                    <a href="/manga/browseManga" class="btn btn-secondary">Refresh again</a>
+                    <a href="/student/borrowedMangas" class="btn btn-info">Borrowed Mangas</a>
+                    <a href="/student/dashboard" class="btn btn-link mt-3">Student Dashboard</a><br>
+                    <a href="/" class="btn btn-link">Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

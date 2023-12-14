@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Review Manga</title>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+</head>
+
+<body>
+	<div class="container mt-5">
+		<h1 class="text-center">Write a Review for Manga ID: <span th:text="${mangaID}"></span> </h1>
+		<form th:action="@{/manga/reviewManga}" method="post" th:object="${review}" class="mt-4" novalidate>
+			<input type="hidden" name="mangaID" th:value="${mangaID}" />
+			<div class="form-group">
+				<textarea name="reviewText" placeholder="Write your review here" th:field="*{reviewText}"
+					class="form-control"></textarea>
+				<div th:if="${#fields.hasErrors('reviewText')}" th:errors="*{reviewText}" class="text-danger"></div>
+			</div>
+
+			<div class="form-group">
+				<input type="number" name="rating" min="1" max="5" placeholder="Rating (1-5)" th:field="*{rating}"
+					class="form-control" />
+				<div th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}" class="text-danger"></div>
+			</div>
+
+			<button type="submit" class="btn btn-primary">Submit Review</button>
+		</form>
+
+		<div th:if="${havetoBorrow}" class="text-danger">
+			<p th:text="${havetoBorrow}"></p>
+		</div>
+		<div th:if="${havetobeStudent}" class="text-danger">
+			<p th:text="${havetobeStudent}"></p>
+		</div>
+		<div th:if="${reviewError}" class="text-danger">
+			<p th:text="${reviewError}"></p>
+		</div>
+		<div th:if="${ratingError}" class="text-danger">
+			<p th:text="${ratingError}"></p>
+		</div>
+
+		<div th:if="${averageRating}">
+			<h3>Average Rating: <span th:text="${averageRating}"></span></h3>
+		</div>
+		<div th:if="${noReviews}" class="text-danger">
+			<p th:text="${noReviews}"></p>
+		</div>
+
+		<form th:action="@{/manga/allreviews}" method="get" class="mt-4">
+			<input type="hidden" name="mangaID" th:value="${mangaID}" />
+			<button type="submit" class="btn btn-info">View All Reviews and Ratings</button>
+		</form>
+
+		<h4>All Reviews</h4>
+		<div th:each="review : ${reviews}" class="mb-3">
+			<div class="card">
+				<div class="card-header">
+					Review by: <span th:text="${review.student.firstName} + ' ' + ${review.student.lastName}"></span>
+				</div>
+				<div class="card-body">
+					<h5 class="card-title">Rating: <span th:text="${review.rating}"></span></h5>
+					<p class="card-text">Review: <span th:text="${review.reviewText}"></span></p>
+				</div>
+			</div>
+		</div>
+
+
+		<a th:href="@{/admin/dashboard}" class="btn btn-link">Back to Admin Dashboard</a> <br />
+		<a th:href="@{/student/dashboard}" class="btn btn-link">Back to Student Dashboard</a>
+	</div>
+</body>
+
+</html>

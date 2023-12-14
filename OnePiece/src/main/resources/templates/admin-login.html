@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    	<link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Admin Login</h1>
+        <form id="loginForm" class="mt-4">
+            <div class="form-group">
+                <label for="adminID">Admin ID:</label>
+                <input type="number" id="adminID" name="adminID" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="adminPassword">Password:</label>
+                <input type="password" id="adminPassword" name="adminPassword" class="form-control">
+            </div>
+            <div id="loginError" class="text-danger"></div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        <a href="/" class="btn btn-link mt-3">Back</a>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#loginForm').on('submit', function (e) {
+                e.preventDefault();
+                var adminID = $('#adminID').val();
+                var adminPassword = $('#adminPassword').val();
+
+                // Validate input
+                if (adminID.trim() === '' || adminPassword.trim() === '') {
+                    $('#loginError').text('Admin ID and Password cannot be blank.');
+                    return;
+                }
+
+                $.ajax({
+                    url: '/admin/login',
+                    type: 'POST',
+                    data: {
+                        adminID: adminID,
+                        adminPassword: adminPassword
+                    },
+                    success: function (response) {
+                        if (response === 'success') {
+                            window.location.href = '/admin/successpage';
+                        } else if (response === "error-admin") {
+                            $('#loginError').text("Admin doesn't exist");
+                        } else {
+                            $('#loginError').text("Invalid password");
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

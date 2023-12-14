@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Sign Up</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+	<link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Admin Sign Up</h1>
+        <form th:action="@{/admin/signup}" th:object="${admin}" method="post" class="mt-4">
+
+            <!-- Admin ID Field -->
+            <div class="form-group">
+                <label for="adminID">Admin ID:</label>
+                <input type="number" th:field="*{adminID}" class="form-control" />
+                <span class="text-danger" th:if="${#fields.hasErrors('adminID')}" th:errors="*{adminID}"></span>
+            </div>
+
+            <!-- Email Field -->
+            <div class="form-group">
+                <label for="adminEmailID">Email:</label>
+                <input type="email" th:field="*{adminEmailID}" class="form-control" />
+                <span class="text-danger" th:if="${#fields.hasErrors('adminEmailID')}" th:errors="*{adminEmailID}"></span>
+            </div>
+
+            <!-- Password Field -->
+            <div class="form-group">
+                <label for="adminPassword">Password:</label>
+                <input type="password" th:field="*{adminPassword}" class="form-control" />
+                <span class="text-danger" th:if="${#fields.hasErrors('adminPassword')}" th:errors="*{adminPassword}"></span>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </div>
+        </form>
+        <a href="/" class="btn btn-link">Back</a>
+    </div>
+
+    
+</body>
+
+</html>

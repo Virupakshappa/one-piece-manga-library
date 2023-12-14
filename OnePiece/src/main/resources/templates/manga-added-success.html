@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manga Added Successfully</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Manga Added Successfully</h1>
+        <h2 class="mt-4">Details of the added manga:</h2>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Manga ID</th>
+                    <th>Anime Name</th>
+                    <th>Written By</th>
+                    <th>Category</th>
+                    <th>Available</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td th:text="${addedManga.mangaID}"></td>
+                    <td th:text="${addedManga.animeName}"></td>
+                    <td th:text="${addedManga.writtenBy}"></td>
+                    <td th:text="${addedManga.category}"></td>
+                    <td th:text="${addedManga.available ? 'Yes' : 'No'}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="/manga/adminbrowse" class="btn btn-link mt-3">Back to Browse Mangas</a>
+    </div>
+</body>
+</html>

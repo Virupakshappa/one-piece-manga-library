@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Manga Selection</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <style>
+      
+        .table-custom {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+            box-shadow: 0 2px 2px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+        .overdue {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            var checkedOne = Array.prototype.slice.call(checkboxes).some(x => x.checked);
+            var errorMessageDiv = document.getElementById('errorMessage');
+
+            if (!checkedOne) {
+                errorMessageDiv.textContent = "Select at least 1 manga to return";
+                return false;
+            } else {
+                errorMessageDiv.textContent = '';
+            }
+            return true;
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">You have borrowed these Mangas</h1>
+        <h4 class="text-info mt-4">Note: Borrowed Mangas must be returned within 3 days!!</h4>
+
+        <form th:action="@{/student/returnManga}" method="post" onsubmit="return validateForm()" class="mt-4">
+            <div id="errorMessage" class="text-danger"></div>
+            <table class="table table-custom table-hover">
+                <thead>
+                    <tr>
+                        <th>Select</th>
+                        <th>Manga ID</th>
+                        <th>Anime Name</th>
+                        <th>Written By</th>
+                        <th>Category</th>
+                        <th>Cover</th>
+                        <th>Review</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="manga : ${borrowedManga}">
+                        <td><input type="checkbox" th:name="'mangaID'" th:value="${manga.mangaID}"></td>
+                        <td th:text="${manga.mangaID}"></td>
+                        <td th:text="${manga.animeName}"></td>
+                        <td th:text="${manga.writtenBy}"></td>
+                        <td th:text="${manga.category}"></td>
+                        <td>
+                            <img th:src="@{'/images/' + ${manga.coverFileName}}" alt="Manga Cover"
+                                style="width:100px;height:100px;" />
+                        </td>
+                        <td>
+                            <a th:href="@{/manga/reviewManga(mangaID=${manga.mangaID})}">Review</a>
+                        </td>
+                        <td th:if="${manga.isOverdue}" class="overdue">Overdue!!</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-custom">Return Selected Manga</button>
+        </form>
+
+        <div th:if="${reviewSuccess}" class="text-success mt-3">
+            <p th:text="${reviewSuccess}"></p>
+        </div>
+
+        <a th:href="@{/downloadBorrowedMangas/pdf}" class="btn btn-custom mt-3">Download Borrowed Mangas (PDF)</a><br>
+        <a href="/manga/browseManga" class="btn btn-link mt-3">Browse Mangas</a><br>
+        <a href="/student/dashboard" class="btn btn-link mt-3">Student Dashboard</a><br>
+        <a href="/student/logout" class="btn btn-secondary mt-3">Logout of Student Account</a>
+    </div>
+</body>
+
+</html>
