@@ -13,7 +13,6 @@ public class AccessDeniedController {
 	    return "access-denied";
 	}
 
-
     @GetMapping("/accessDenied/{role}")
     public String accessDenied(@PathVariable String role, Model model) {
         model.addAttribute("role", role);

@@ -36,231 +36,230 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/admin")
 public class AdminController {
 
-	@Autowired
-	AdminDAO adminDao;
+    @Autowired
+    AdminDAO adminDao;
 
-	@Autowired
-	AdminValidator adminVal;
+    @Autowired
+    AdminValidator adminVal;
 
-	@Autowired
-	EmailService emailService;
-	
-	@Autowired
-	MangaDAO mangaDao;
-	
-	@Autowired
-	MangaService mangaService;
+    @Autowired
+    EmailService emailService;
 
-	@GetMapping("/signup")
-	public String showSignupForm(ModelMap model, Admin admin) {
+    @Autowired
+    MangaDAO mangaDao;
 
-		model.addAttribute(admin);
+    @Autowired
+    MangaService mangaService;
 
-		return "admin-signup";
-	}
+    @GetMapping("/signup")
+    public String showSignupForm(ModelMap model, Admin admin) {
 
-	@PostMapping("/signup")
-	public ModelAndView addAdminPost(@ModelAttribute("admin") Admin admin, BindingResult binResult) {
+        model.addAttribute(admin);
 
-		ModelAndView modelAndView = new ModelAndView();
+        return "admin-signup";
+    }
 
-		adminVal.validate(admin, binResult);
+    @PostMapping("/signup")
+    public ModelAndView addAdminPost(@ModelAttribute("admin") Admin admin, BindingResult binResult) {
 
-		if (binResult.hasErrors()) {
-			modelAndView.setViewName("admin-signup");
-			return modelAndView;
-		}
+        ModelAndView modelAndView = new ModelAndView();
 
-		try {
-			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-			String hashedPassword = passwordEncoder.encode(admin.getAdminPassword());
-			admin.setAdminPassword(hashedPassword);
+        adminVal.validate(admin, binResult);
 
-			int result = adminDao.addAdmin(admin);
+        if (binResult.hasErrors()) {
+            modelAndView.setViewName("admin-signup");
+            return modelAndView;
+        }
 
-			if (result > 0) {
-				modelAndView.addObject("admin", admin);
-				modelAndView.setViewName("admin-signup-success");
-				emailService.sendEmailAdmin(admin.getAdminEmailID(), admin.getAdminID());
+        try {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String hashedPassword = passwordEncoder.encode(admin.getAdminPassword());
+            admin.setAdminPassword(hashedPassword);
 
-			} else if (result == -1) {
-				modelAndView.addObject("adminID", admin.getAdminID());
-				modelAndView.setViewName("admin-account-exists");
-			} else {
-				modelAndView.setViewName("admin-signup-error");
-			}
-		} catch (AdminException e) {
-			e.printStackTrace();
-		}
-		catch (EmailException e) {
-			System.out.println(e.getMessage());
-		}
-		return modelAndView;
+            int result = adminDao.addAdmin(admin);
 
-	}
+            if (result > 0) {
+                modelAndView.addObject("admin", admin);
+                modelAndView.setViewName("admin-signup-success");
+                emailService.sendEmailAdmin(admin.getAdminEmailID(), admin.getAdminID());
 
-	@GetMapping("/login")
-	public String showLoginForm() {
-		return "admin-login";
-	}
+            } else if (result == -1) {
+                modelAndView.addObject("adminID", admin.getAdminID());
+                modelAndView.setViewName("admin-account-exists");
+            } else {
+                modelAndView.setViewName("admin-signup-error");
+            }
+        } catch (AdminException e) {
+            e.printStackTrace();
+        } catch (EmailException e) {
+            System.out.println(e.getMessage());
+        }
+        return modelAndView;
 
-	@PostMapping("/login")
-	@ResponseBody
-	public String loginAdmin(@RequestParam("adminID") int adminID, @RequestParam("adminPassword") String adminPassword,
-			HttpServletRequest request) {
+    }
 
-		System.out.println("=======admin id========== " + adminID);
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			session.invalidate();
-		}
-		session = request.getSession(true);
+    @GetMapping("/login")
+    public String showLoginForm() {
+        return "admin-login";
+    }
 
-		try {
-			Admin storedAdmin = adminDao.getAdminDetails(adminID);
+    @PostMapping("/login")
+    @ResponseBody
+    public String loginAdmin(@RequestParam("adminID") int adminID, @RequestParam("adminPassword") String adminPassword,
+                             HttpServletRequest request) {
 
-			if (storedAdmin == null) {
-				return "error-admin";
-			}
-			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        System.out.println("=======admin id========== " + adminID);
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        session = request.getSession(true);
 
-			if (passwordEncoder.matches(adminPassword, storedAdmin.getAdminPassword())) {
-				session.setAttribute("adminID", adminID);
-				return "success";
-			} else {
-				return "error-password";
-			}
+        try {
+            Admin storedAdmin = adminDao.getAdminDetails(adminID);
 
-		} catch (AdminException e) {
-			// Handle exception
-			return "error";
-		}
-	}
+            if (storedAdmin == null) {
+                return "error-admin";
+            }
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-	@GetMapping("/successpage")
-	public String openAdminSuccessPage() {
+            if (passwordEncoder.matches(adminPassword, storedAdmin.getAdminPassword())) {
+                session.setAttribute("adminID", adminID);
+                return "success";
+            } else {
+                return "error-password";
+            }
 
-		return "admin-login-success";
-	}
+        } catch (AdminException e) {
+            return "error";
+        }
+    }
 
-	@GetMapping("/dashboard")
-	public String openAdminDashboard() {
+    @GetMapping("/successpage")
+    public String openAdminSuccessPage() {
 
-		return "admin-dashboard";
-	}
+        return "admin-login-success";
+    }
 
-	@GetMapping("/adminProfile")
-	public ModelAndView showAdminProfileForm(HttpSession session) {
+    @GetMapping("/dashboard")
+    public String openAdminDashboard() {
 
-		ModelAndView mv = new ModelAndView();
-		try {
-			int adminID = (int) session.getAttribute("adminID");
+        return "admin-dashboard";
+    }
 
-			Admin admin = adminDao.getAdminDetails(adminID);
+    @GetMapping("/adminProfile")
+    public ModelAndView showAdminProfileForm(HttpSession session) {
 
-			if (admin != null) {
-				mv.addObject("adminDetails", admin);
-				mv.setViewName("admin-profile");
-			} else
-				mv.setViewName("admin-dashboard");
-		} catch (AdminException e) {
-			System.out.println(e.getMessage());
-		}
-		return mv;
+        ModelAndView mv = new ModelAndView();
+        try {
+            int adminID = (int) session.getAttribute("adminID");
 
-	}
+            Admin admin = adminDao.getAdminDetails(adminID);
 
-	@PostMapping("/adminProfile/edit")
-	public ModelAndView editAdminProfile(@ModelAttribute("adminDetails") Admin admin, BindingResult bindRes,
-			HttpSession session) {
-		ModelAndView modelAndView = new ModelAndView();
+            if (admin != null) {
+                mv.addObject("adminDetails", admin);
+                mv.setViewName("admin-profile");
+            } else
+                mv.setViewName("admin-dashboard");
+        } catch (AdminException e) {
+            System.out.println(e.getMessage());
+        }
+        return mv;
 
-		try {
+    }
 
-			int adminID = (int) session.getAttribute("adminID");
+    @PostMapping("/adminProfile/edit")
+    public ModelAndView editAdminProfile(@ModelAttribute("adminDetails") Admin admin, BindingResult bindRes,
+                                         HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView();
 
-			Admin newAdmin = adminDao.getAdminDetails(adminID);
-			String adminPass = newAdmin.getAdminPassword();
+        try {
 
-			admin.setAdminPassword(adminPass);
+            int adminID = (int) session.getAttribute("adminID");
 
-			int result = adminDao.updateAdmin(admin);
+            Admin newAdmin = adminDao.getAdminDetails(adminID);
+            String adminPass = newAdmin.getAdminPassword();
 
-			if (result < 0) {
-				modelAndView.setViewName("error-updating-admin");
-			} else {
-				modelAndView.setViewName("admin-update-success");
-			}
+            admin.setAdminPassword(adminPass);
 
-		} catch (AdminException e) {
-			System.out.println(e.getMessage());
-		}
+            int result = adminDao.updateAdmin(admin);
 
-		return modelAndView;
+            if (result < 0) {
+                modelAndView.setViewName("error-updating-admin");
+            } else {
+                modelAndView.setViewName("admin-update-success");
+            }
 
-	}
+        } catch (AdminException e) {
+            System.out.println(e.getMessage());
+        }
 
-	@GetMapping("/logout")
-	public String logout(HttpSession session) {
-		session.invalidate();
-		return "redirect:/admin/login";
-	}
+        return modelAndView;
 
-	@PostMapping("/verifyPassword")
-	public ModelAndView adminVerifyPassword(@RequestParam("currentPassword") String currentPassword, HttpSession session) {
+    }
 
-		ModelAndView mv = new ModelAndView();
-		int adminID = (int) session.getAttribute("adminID");
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		try {
-			Admin admin = adminDao.getAdminDetails(adminID);
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/admin/login";
+    }
 
-			String realPassword = admin.getAdminPassword();
-			if (passwordEncoder.matches(currentPassword, realPassword)) {
-				mv.setViewName("admin-change-pass");
+    @PostMapping("/verifyPassword")
+    public ModelAndView adminVerifyPassword(@RequestParam("currentPassword") String currentPassword, HttpSession session) {
 
-			} else {
-				mv.addObject("adminDetails", admin);
-				mv.addObject("passMissmatch", "Password should match the current password");
-				
-				mv.setViewName("admin-profile");
-			}
-		} catch (AdminException e) {
-			e.printStackTrace();
-		}
+        ModelAndView mv = new ModelAndView();
+        int adminID = (int) session.getAttribute("adminID");
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        try {
+            Admin admin = adminDao.getAdminDetails(adminID);
 
-		return mv;
+            String realPassword = admin.getAdminPassword();
+            if (passwordEncoder.matches(currentPassword, realPassword)) {
+                mv.setViewName("admin-change-pass");
 
-	}
-	@GetMapping("/notifyOverdue/{mangaId}")
-	public String notifyOverdue(@PathVariable int mangaId, Model model) {
-	    System.out.println("====inside notify");
-	    try {
-	        Manga manga = mangaDao.findMangaById(mangaId);
-	        
-	        if (manga != null && mangaService.isMangaOverdue(manga)) {
-	            String studentEmail = manga.getBorrowedBy().getEmail();
-	            String message = "Please return the manga '" + manga.getAnimeName() + "' because it's overdue.";
+            } else {
+                mv.addObject("adminDetails", admin);
+                mv.addObject("passMissmatch", "Password should match the current password");
 
-	            model.addAttribute("manga", manga);
+                mv.setViewName("admin-profile");
+            }
+        } catch (AdminException e) {
+            e.printStackTrace();
+        }
 
-	            Notification notification = new Notification();
-	            notification.setStudentEmail(studentEmail);
-	            notification.setMessage(message);
+        return mv;
 
-	            NotificationDAO notificationDAO = new NotificationDAO();
-	            notificationDAO.addNotification(notification);
+    }
 
-	            return "admin-notified-success";
+    @GetMapping("/notifyOverdue/{mangaId}")
+    public String notifyOverdue(@PathVariable int mangaId, Model model) {
+        System.out.println("====inside notify");
+        try {
+            Manga manga = mangaDao.findMangaById(mangaId);
 
-	        } else {
-	            return "redirect:/manga/adminbrowse";
-	        }
-	    } catch (MangaException | NotificationException e) {
-	        System.out.println(e.getMessage());
-	        return "redirect:/manga/adminbrowse";
-	    }
-	}
+            if (manga != null && mangaService.isMangaOverdue(manga)) {
+                String studentEmail = manga.getBorrowedBy().getEmail();
+                String message = "Please return the manga '" + manga.getAnimeName() + "' because it's overdue.";
+
+                model.addAttribute("manga", manga);
+
+                Notification notification = new Notification();
+                notification.setStudentEmail(studentEmail);
+                notification.setMessage(message);
+
+                NotificationDAO notificationDAO = new NotificationDAO();
+                notificationDAO.addNotification(notification);
+
+                return "admin-notified-success";
+
+            } else {
+                return "redirect:/manga/adminbrowse";
+            }
+        } catch (MangaException | NotificationException e) {
+            System.out.println(e.getMessage());
+            return "redirect:/manga/adminbrowse";
+        }
+    }
 
 
 }
